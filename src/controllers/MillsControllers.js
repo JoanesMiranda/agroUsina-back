@@ -21,7 +21,7 @@ module.exports = {
     async getById(req, res) {
         const id = req.params.id;
         try {
-            const mill = await Mill.findByPk(id);
+            const mill = await Mills.findByPk(id);
             if (!mill) {
                 throw new Error("mill not found");
             }
@@ -35,11 +35,11 @@ module.exports = {
     async store(req, res) {
 
         try {
-            const { name } = req.body
+            const name = req.body;
 
-            const mills = await Mills.create({ name });
+            const mill = await Mills.create({ name });
 
-            return res.json(mills);
+            return res.json(mill);
         } catch (err) {
             return res.status(400).json({ error: err.message });
         }

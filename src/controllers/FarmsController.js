@@ -6,7 +6,7 @@ module.exports = {
     async index(req, res) {
 
         try {
-            const { harvest_id } = req.params;
+            const harvest_id  = req.params;
 
             const harvest = await Harvests.findByPk(harvest_id, {
                 include: { association: 'farms', through: { attributes: [] } }
@@ -21,7 +21,7 @@ module.exports = {
 
         try {
 
-            const { harvest_id } = req.params;
+            const harvest_id = req.params;
 
             const { code, name } = req.body;
 

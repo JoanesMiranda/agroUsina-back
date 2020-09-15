@@ -6,7 +6,7 @@ module.exports = {
     async index(req, res) {
 
         try {
-            const { mill_id } = req.params;
+            const mill_id  = req.params;
 
             const mill = await Mills.findByPk(mill_id, {
                 include: {
@@ -23,7 +23,7 @@ module.exports = {
     async store(req, res) {
 
         try {
-            const { mill_id } = req.params;
+            const mill_id  = req.params;
             const { code, start_date_harvest, finish_date_harvest } = req.body;
 
             const mill = await Mills.findByPk(mill_id);
