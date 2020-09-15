@@ -19,7 +19,9 @@ module.exports = {
     },
 
     async getById(req, res) {
+
         const id = req.params.id;
+
         try {
             const mill = await Mills.findByPk(id);
             if (!mill) {
@@ -35,7 +37,7 @@ module.exports = {
     async store(req, res) {
 
         try {
-            const name = req.body;
+            const { name } = req.body;
 
             const mill = await Mills.create({ name });
 
@@ -44,6 +46,7 @@ module.exports = {
             return res.status(400).json({ error: err.message });
         }
     },
+    
 
     async delete(req, res) {
 

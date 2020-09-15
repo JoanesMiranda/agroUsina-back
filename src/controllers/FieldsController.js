@@ -6,7 +6,7 @@ module.exports = {
     async index(req, res) {
 
         try {
-            const farm_id = req.params;
+            const { farm_id } = req.params;
 
             const farm = await Farms.findByPk(farm_id, {
                 include: { association: 'fields' }
@@ -21,7 +21,7 @@ module.exports = {
     async store(req, res) {
 
         try {
-            const farm_id = req.params;
+            const { farm_id } = req.params;
             const { code, longitude, latitude } = req.body;
 
             const farm = await Farms.findByPk(farm_id);
@@ -45,8 +45,8 @@ module.exports = {
     async delete(req, res) {
 
         try {
-            const farm_id = req.params;
-            const code  = req.body;
+            const { farm_id } = req.params;
+            const { code } = req.body;
 
             const farm = await Farms.findByPk(farm_id);
 
