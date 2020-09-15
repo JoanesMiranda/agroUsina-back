@@ -18,6 +18,20 @@ module.exports = {
         }
     },
 
+    async getById(req, res) {
+        const id = req.params.id;
+        try {
+            const mill = await Mill.findByPk(id);
+            if (!mill) {
+                throw new Error("mill not found");
+            }
+
+            return res.json(mill);
+        } catch (error) {
+            return res.status(406).send(error);
+        }
+    },
+
     async store(req, res) {
 
         try {

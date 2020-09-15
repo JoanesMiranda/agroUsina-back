@@ -5,21 +5,21 @@ Operações HTTP atendidas: **GET, POST PUT e DELETE.**
 #### CRUD 
 ACTION | RESULT | STATUS CODE
 ----- | ---- | ----
-`GET /mills` | Retorna uma lista com todos as usinas |200 
-`GET /mills/:id` | Retorna umas usina especifica  | 200
-`POST /mills` | Insere um nova usina  | 200
+`GET /mills` | Retorna uma lista com todos as usinas |200, 404
+`GET /mills/:id` | Retorna umas usina especifica  |200, 404
+`POST /mills` | Insere um nova usina  |200
 `DELETE /mills/:id` | Remove uma usina| 200
-`GET /harvests` | Retorna uma lista com toda as colheitas| 200
-`GET /harvests:id` | Retorna uma colheita especifica| 200
+`GET /harvests` | Retorna uma lista com toda as colheitas|200, 404
+`GET /harvests/:id` | Retorna uma colheita especifica|200, 404
 `POST /harvests/id` | Insere um nova colheita  | 200
-`DELETE /harvests:id` | Remove uma colheita| 200
-`GET /farms` | Retorna uma lista com toda as fazenda| 200
-`GET /farms:id` | Retorna uma fazenda especifica| 200
+`DELETE /harvests/:id` | Remove uma colheita| 200
+`GET /farms` | Retorna uma lista com toda as fazenda| 200, 404
+`GET /farms/:id` | Retorna uma fazenda especifica| 200, 404
 `POST /farms/:id` | Insere um nova fazenda  | 200
-`DELETE /farms:id` | Remove uma fazenda| 200
-`GET /fields` | Retorna uma lista com toda os campos das fazendas| 200
-`POST /fields/id` | Insere um novo campo  | 200
-`DELETE /fields:id` | Remove um campo| 200
+`DELETE /farms/:id` | Remove uma fazenda| 200, 404
+`GET /fields` | Retorna uma lista com toda os campos das fazendas| 200, 404
+`POST /fields/:id` | Insere um novo campo  | 200
+`DELETE /fields/:id` | Remove um campo| 200, 404
 
 <br/>
 

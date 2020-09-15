@@ -43,29 +43,54 @@ module.exports = {
         }
     },
 
+    // async delete(req, res) {
+
+    //     try {
+    //         const { harvest_id } = req.params;
+
+    //         const { code } = req.body;
+
+    //         const harvest = await Harvests.findByPk(harvest_id);
+
+    //         if (!harvest) {
+    //             throw new Error("Harvest not found");
+    //         }
+
+    //         const farm = await Farms.findOne({
+    //             where: { code }
+    //         });
+
+    //         await harvest.removeFarm(farm);
+
+    //         return res.json();
+
+    //     } catch (err) {
+    //         return res.status(400).json({ error: err.message });
+    //     }
+    // }
+
     async delete(req, res) {
 
         try {
-            const { harvest_id } = req.params;
+            const id = req.params.id;
 
-            const { code } = req.body;
+            const farms = await Farms.findByPk(id);
 
-            const harvest = await Harvests.findByPk(harvest_id);
-
-            if (!harvest) {
-                throw new Error("Harvest not found");
+            if (!farms) {
+                throw new Error("Farms not found");
             }
-
-            const farm = await Farms.findOne({
-                where: { code }
-            });
-
-            await harvest.removeFarm(farm);
+            await farms.destroy();
 
             return res.json();
-
         } catch (err) {
             return res.status(400).json({ error: err.message });
         }
-    }
+    },
+
+
+
+
+
+
+
 }
