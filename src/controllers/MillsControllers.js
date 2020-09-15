@@ -4,37 +4,50 @@ module.exports = {
 
     async index(req, res) {
 
-        const mills = await Mills.findAll({
+        try {
+            const mills = await Mills.findAll({
 
-            order: [
-                ['created_at', 'DESC']
-            ]
-        });
+                order: [
+                    ['created_at', 'DESC']
+                ]
+            });
 
-        return res.json(mills);
+            return res.json(mills);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
     },
 
     async store(req, res) {
 
-        const { name } = req.body
+        try {
+            const { name } = req.body
 
-        const mills = await Mills.create({ name });
+            const mills = await Mills.create({ name });
 
-        return res.json(mills);
+            return res.json(mills);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
     },
 
     async delete(req, res) {
 
-        const id = req.params.id;
+        try {
+            const id = req.params.id;
 
-        const mill = await Mills.findByPk(id);
+            const mill = await Mills.findByPk(id);
 
-        if (!mill) {
-            return res.status(400).json({ error: "Mill not found" });
+            if (!mill) {
+                throw new Error("Mill not found");
+            }
+            await mill.destroy();
+
+            return res.json();
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
         }
-        await mill.destroy();
 
-        return res.json();
     },
 
     paginate(req, res) {

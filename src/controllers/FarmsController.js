@@ -5,55 +5,67 @@ module.exports = {
 
     async index(req, res) {
 
-        const { harvest_id } = req.params;
+        try {
+            const { harvest_id } = req.params;
 
-        const harvest = await Harvests.findByPk(harvest_id, {
-            include: { association: 'farms', through: {attributes: []} }
-        });
-
-        return res.json(harvest);
+            const harvest = await Harvests.findByPk(harvest_id, {
+                include: { association: 'farms', through: { attributes: [] } }
+            });
+            return res.json(harvest);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
     },
 
     async store(req, res) {
 
-        const { harvest_id } = req.params;
+        try {
 
-        const { code, name } = req.body;
+            const { harvest_id } = req.params;
 
-        const harvest = await Harvests.findByPk(harvest_id);
+            const { code, name } = req.body;
 
-        if (!harvest) {
-            return res.status(400).json({ error: 'Harvests no found' });
+            const harvest = await Harvests.findByPk(harvest_id);
+
+            if (!harvest) {
+                throw new Error('Harvests no found');
+            }
+
+            const [farm] = await Farms.findOrCreate({
+                where: { code, name }
+            });
+
+            await harvest.addFarm(farm);
+
+            return res.json({ farm });
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
         }
-
-        const [farm] = await Farms.findOrCreate({
-            where: { code, name }
-        });
-
-        await harvest.addFarm(farm);
-
-        return res.json({ farm });
-
     },
 
     async delete(req, res) {
 
-        const { harvest_id } = req.params;
+        try {
+            const { harvest_id } = req.params;
 
-        const { code } = req.body;
+            const { code } = req.body;
 
-        const harvest = await Harvests.findByPk(harvest_id);
+            const harvest = await Harvests.findByPk(harvest_id);
 
-        if (!harvest) {
-            return res.status(400).json({ error: "Harvest not found" });
+            if (!harvest) {
+                throw new Error("Harvest not found");
+            }
+
+            const farm = await Farms.findOne({
+                where: { code }
+            });
+
+            await harvest.removeFarm(farm);
+
+            return res.json();
+
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
         }
-
-        const farm = await Farms.findOne({
-            where: { code }
-        });
-
-        await harvest.removeFarm(farm);
-
-        return res.json();
     }
 }

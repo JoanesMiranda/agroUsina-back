@@ -5,47 +5,62 @@ module.exports = {
 
     async index(req, res) {
 
-        const { mill_id } = req.params;
+        try {
+            const { mill_id } = req.params;
 
-        const mill = await Mills.findByPk(mill_id, {
-            include: {
-                association: 'harvests'
-            }
-        });
+            const mill = await Mills.findByPk(mill_id, {
+                include: {
+                    association: 'harvests'
+                }
+            });
 
-        return res.json(mill);
+            return res.json(mill);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
+        }
     },
 
     async store(req, res) {
-        const { mill_id } = req.params;
-        const { code, start_date_harvest, finish_date_harvest } = req.body;
 
-        const mill = await Mills.findByPk(mill_id);
+        try {
+            const { mill_id } = req.params;
+            const { code, start_date_harvest, finish_date_harvest } = req.body;
 
-        if (!mill) {
-            return res.status(400).json({ error: 'Mills not found' });
+            const mill = await Mills.findByPk(mill_id);
+
+            if (!mill) {
+                throw new Error('Mills not found');
+            }
+
+            const harvests = await Harvests.create({
+                code,
+                start_date_harvest,
+                finish_date_harvest,
+                mill_id,
+            });
+
+            return res.json(harvests);
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
         }
 
-        const harvests = await Harvests.create({
-            code,
-            start_date_harvest,
-            finish_date_harvest,
-            mill_id,
-        });
-        return res.json(harvests);
     },
 
     async delete(req, res) {
 
-        const id = req.params.id;
+        try {
+            const id = req.params.id;
 
-        const harvest = await Harvests.findByPk(id);
+            const harvest = await Harvests.findByPk(id);
 
-        if (!harvest) {
-            return res.status(400).json({ error: "Harvests not found" });
+            if (!harvest) {
+                throw new Error("Harvests not found");
+            }
+            await harvest.destroy();
+
+            return res.json();
+        } catch (err) {
+            return res.status(400).json({ error: err.message });
         }
-        await harvest.destroy();
-
-        return res.json();
     },
 }
